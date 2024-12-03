@@ -1,0 +1,20 @@
+<form (ngSubmit)="addBook()" #bookForm="ngForm">
+  <mat-form-field>
+    <input matInput placeholder="Titre" [(ngModel)]="newBook.title" name="title" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Auteur" [(ngModel)]="newBook.author" name="author" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Prix" [(ngModel)]="newBook.price" name="price" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="date" placeholder="Date de publication" [(ngModel)]="newBook.publicationDate" name="publicationDate" required />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">  Ajouter
+  </button>
+</form>

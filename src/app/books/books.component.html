@@ -1,0 +1,123 @@
+<div class="container">
+  <!-- Formulaire de modification -->
+  <div *ngIf="editingBook" class="edit-form">
+    <h3>Modifier le livre</h3>
+    <form (ngSubmit)="saveEdit()">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Titre"
+          [(ngModel)]="editingBook.title"
+          name="title"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Auteur"
+          [(ngModel)]="editingBook.author"
+          name="author"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="number"
+          placeholder="Prix"
+          [(ngModel)]="editingBook.price"
+          name="price"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="date"
+          placeholder="Date de publication"
+          [(ngModel)]="editingBook.publicationDate"
+          name="publicationDate"
+          required
+        />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">
+        Sauvegarder
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        (click)="cancelEdit()"
+      >
+        Annuler
+      </button>
+    </form>
+  </div>
+
+  <!-- Tableau des livres -->
+  <table mat-table [dataSource]="books" class="mat-elevation-z8">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Titre</th>
+      <td mat-cell *matCellDef="let book">{{ book.title }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef>Auteur</th>
+      <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Prix</th>
+      <td mat-cell *matCellDef="let book">{{ book.price | currency }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="publicationDate">
+      <th mat-header-cell *matHeaderCellDef>Date de publication</th>
+      <td mat-cell *matCellDef="let book">
+        {{ book.publicationDate | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let book">
+        <button
+          mat-button
+          color="primary"
+          (click)="editBook(book)"
+          [disabled]="editingBook !== null"
+          *ngIf="this.roles.includes('ADMIN')"
+        >
+          Modifier
+        </button>
+        <button mat-button color="warn" (click)="deleteBook(book)"
+        *ngIf="this.roles.includes('ADMIN')">
+          Supprimer
+        </button>
+      </td>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="[
+        'title',
+        'author',
+        'price',
+        'publicationDate',
+        'actions'
+      ]"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="
+        let row;
+        columns: ['title', 'author', 'price', 'publicationDate', 'actions']
+      "
+    ></tr>
+  </table>
+</div>
